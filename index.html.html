@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ภารกิจนักจับคู่โน้ตดนตรีสากล 🎵</title>
+<style>
+:root{--ink:#26335b;--pink:#ff6fae;--blue:#63c9ff;--yellow:#ffe16b;--mint:#8cf0c5;--purple:#b9a0ff}
+*{box-sizing:border-box}body{margin:0;font-family:"Tahoma","Leelawadee UI",sans-serif;color:var(--ink);background:linear-gradient(135deg,#fff2fa,#eaf8ff 48%,#fff9d9);min-height:100vh}
+.wrap{max-width:1050px;margin:auto;padding:18px}.hero{text-align:center;padding:18px 12px 8px}.hero .kicker{display:inline-block;background:#fff;border:2px solid #f8c5df;border-radius:99px;padding:6px 14px;font-weight:bold;color:#d64d91}
+h1{font-size:clamp(25px,4vw,42px);margin:12px 0 6px;color:#5743a5;text-shadow:2px 2px #fff} .sub{margin:0 auto;max-width:700px;line-height:1.6}
+.panel{background:#ffffffdc;border:2px solid #fff;border-radius:24px;padding:18px;box-shadow:0 10px 25px #6674a51a;margin:14px 0}
+.row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.stats{display:flex;gap:9px;flex-wrap:wrap}
+.stat{padding:9px 13px;border-radius:15px;background:#f1edff;font-weight:bold}.stat.time{background:#fff3c4}.stat.score{background:#dffbed}
+input{font:inherit;padding:12px;border:2px solid #d9d8f5;border-radius:13px;min-width:200px;max-width:100%;outline-color:#9c8cff}
+button{font:inherit;font-weight:bold;border:0;border-radius:14px;padding:12px 17px;cursor:pointer;transition:transform .15s,filter .15s}button:hover{transform:translateY(-2px);filter:brightness(1.03)}button:focus-visible{outline:3px solid #5743a5;outline-offset:3px}
+.primary{background:linear-gradient(135deg,#8b7bff,#ff83bb);color:white;box-shadow:0 5px 0 #d6c9ff}.secondary{background:#e8f7ff;color:#265b85}.soft{background:#fff0f7;color:#9b356d}
+.progress{height:12px;background:#ece9fa;border-radius:99px;overflow:hidden;margin-top:12px}.bar{height:100%;width:100%;background:linear-gradient(90deg,#72e3c2,#7aabff,#ff8dbd);transition:width .4s}
+.instructions{line-height:1.65;background:#fff9d9;border-radius:15px;padding:12px 15px;margin-top:12px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
+.card{min-height:120px;background:white;border:3px solid #e5e2ff;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;box-shadow:0 5px 0 #e9e5ff;color:var(--ink);padding:10px;position:relative}
+.card .symbol{font-size:43px;line-height:1.05;font-family:"Noto Music","Bravura","Segoe UI Symbol","Arial Unicode MS",serif}
+.card .label{font-size:14px;font-weight:bold}.card .hint{font-size:12px;color:#6d7193}
+.card.selected{border-color:#8c7bff;background:#f3f0ff;transform:translateY(-2px)}.card.matched{border-color:#5bd6a8;background:#e7fff4;cursor:default;box-shadow:0 4px 0 #b7f0d7}.card.wrong{animation:shake .25s;border-color:#ff7da8}
+.card:disabled{opacity:1;cursor:default}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.feedback{min-height:30px;font-weight:bold;text-align:center;padding:8px;color:#6a4db0}
+.result{text-align:center;padding:18px}.bigscore{font-size:clamp(40px,8vw,68px);font-weight:900;color:#6a55d9}.hidden{display:none!important}
+.small{font-size:13px;color:#6d7193;line-height:1.6}.footer{text-align:center;font-size:12px;color:#777b9c;padding:12px}
+@media(max-width:650px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.card{min-height:105px;padding:7px}.card .symbol{font-size:36px}.card .label{font-size:12px}.wrap{padding:10px}.panel{padding:12px}}
+@media(max-width:390px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+ <div class="kicker">🎹 MUSIC MATCH CHALLENGE 🎹</div>
+ <h1>ภารกิจนักจับคู่โน้ตดนตรีสากล</h1>
+ <p class="sub">จับคู่ <b>สัญลักษณ์โน้ต ตัวโน้ต และตัวหยุด</b> ให้ถูกต้อง ภายใน 4 นาที!<br>พร้อมลุยไหม นักดนตรีตัวจิ๋ว 🌈🎶</p>
+</header>
+<section class="panel" id="setup">
+ <div class="row">
+  <div><b>👩‍🎓 ชื่อ–นามสกุล / ชื่อเล่น</b><br><input id="student" maxlength="80" placeholder="พิมพ์ชื่อก่อนเริ่มเล่น"></div>
+  <div><button class="primary" id="startBtn">เริ่มภารกิจ ▶</button></div>
+ </div>
+ <div class="instructions"><b>📘 วิธีเล่น</b><br>1. แตะการ์ด 2 ใบที่มีความหมายตรงกัน เช่น “ตัวโน้ตตัวดำ” กับ “♩”<br>2. จับคู่ให้ครบ 10 คู่ มีทั้งหมด 20 ใบ • คู่ละ 1 คะแนน • คะแนนเต็ม 10 คะแนน<br>3. เวลา 4:00 นาที เมื่อหมดเวลาระบบจะสรุปคะแนนให้อัตโนมัติ</div>
+ <p class="small">เนื้อหาทบทวน: ตัวโน้ตตัวกลม ตัวขาว ตัวดำ เขบ็ตหนึ่งชั้น เขบ็ตสองชั้น และตัวหยุดที่สอดคล้องกัน</p>
+</section>
+<section class="panel hidden" id="game">
+ <div class="row">
+  <div class="stats"><div class="stat time">⏱ เวลา <span id="time">04:00</span></div><div class="stat score">⭐ คะแนน <span id="score">0</span>/10</div><div class="stat">🧩 คู่ที่พบ <span id="pairs">0</span>/10</div></div>
+  <button class="soft" id="quitBtn">จบเกม</button>
+ </div>
+ <div class="progress"><div class="bar" id="bar"></div></div>
+ <div class="feedback" id="feedback" aria-live="polite">เลือกการ์ด 2 ใบที่ตรงกันเลย! ✨</div>
+ <div class="grid" id="grid" aria-label="การ์ดจับคู่โน้ตดนตรี"></div>
+</section>
+<section class="panel hidden" id="result">
+ <div class="result">
+  <div style="font-size:48px" id="medal">🏆</div><h2 id="resultTitle">เก่งมาก!</h2>
+  <p id="resultName"></p><div class="bigscore"><span id="finalScore">0</span><span style="font-size:25px">/10</span></div>
+  <p id="resultMsg"></p><p><b>เวลาที่ใช้:</b> <span id="elapsed">00:00</span></p>
+  <div class="row" style="justify-content:center;margin-top:18px"><button class="primary" id="againBtn">🔄 เล่นอีกครั้ง</button><button class="secondary" id="copyBtn">📋 คัดลอกผลคะแนน</button></div>
+  <p class="small" id="copyStatus" aria-live="polite"></p>
+  <p class="small">หมายเหตุ: คะแนนนี้แสดงบนอุปกรณ์ที่เล่น ไม่ได้ส่งให้อัตโนมัติ หากต้องการเก็บคะแนนรวมทั้งห้อง ให้ให้นักเรียนคัดลอกผลคะแนนส่งครู หรือเผยแพร่ผ่านแพลตฟอร์มที่โรงเรียนใช้</p>
+ </div>
+</section>
+<div class="footer">🎵 เรียนรู้ดนตรีอย่างสนุก • ทบทวนก่อนเข้าสู่บทเรียน • ใช้ได้บนคอมพิวเตอร์ แท็บเล็ต และโทรศัพท์</div>
+</div>
+<script>
+const pairsData = [
+ {id:"whole",symbol:"𝅝",name:"ตัวโน้ตตัวกลม",desc:"4 จังหวะ"},
+ {id:"half",symbol:"𝅗𝅥",name:"ตัวโน้ตตัวขาว",desc:"2 จังหวะ"},
+ {id:"quarter",symbol:"♩",name:"ตัวโน้ตตัวดำ",desc:"1 จังหวะ"},
+ {id:"eighth",symbol:"♪",name:"ตัวโน้ตเขบ็ตหนึ่งชั้น",desc:"ครึ่งจังหวะ"},
+ {id:"sixteenth",symbol:"♬",name:"ตัวโน้ตเขบ็ตสองชั้น",desc:"1/4 จังหวะ"},
+ {id:"rwhole",symbol:"𝄻",name:"ตัวหยุดตัวกลม",desc:"4 จังหวะ"},
+ {id:"rhalf",symbol:"𝄼",name:"ตัวหยุดตัวขาว",desc:"2 จังหวะ"},
+ {id:"rquarter",symbol:"𝄽",name:"ตัวหยุดตัวดำ",desc:"1 จังหวะ"},
+ {id:"reighth",symbol:"𝄾",name:"ตัวหยุดเขบ็ตหนึ่งชั้น",desc:"ครึ่งจังหวะ"},
+ {id:"rsixteenth",symbol:"𝄿",name:"ตัวหยุดเขบ็ตสองชั้น",desc:"1/4 จังหวะ"}
+];
+let selected=[],matched=new Set(),score=0,timeLeft=240,tick=null,startAt=0,finished=false,deck=[];
+const $=id=>document.getElementById(id);
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function makeDeck(){deck=[];pairsData.forEach(p=>{deck.push({id:p.id,kind:"symbol",symbol:p.symbol,name:p.name,desc:p.desc});deck.push({id:p.id,kind:"name",symbol:"🎵",name:p.name,desc:p.desc})});shuffle(deck)}
+function renderDeck(){
+ const grid=$("grid");grid.innerHTML="";
+ deck.forEach((c,i)=>{
+  const b=document.createElement("button");b.className="card";b.type="button";b.dataset.index=i;b.setAttribute("aria-label","การ์ดใบที่ "+(i+1));
+  b.innerHTML=c.kind==="symbol"?`<span class="symbol">${c.symbol}</span><span class="label">สัญลักษณ์</span>`:`<span class="symbol" style="font-size:30px">🎼</span><span class="label">${c.name}</span>`;
+  b.addEventListener("click",()=>choose(i,b));grid.appendChild(b);
+ });
+}
+function choose(i,b){
+ if(finished||matched.has(i)||selected.some(x=>x.i===i)||selected.length>=2)return;
+ b.classList.add("selected");selected.push({i,b});
+ if(selected.length===2){
+  const [a,c]=selected;
+  if(deck[a.i].id===deck[c.i].id && deck[a.i].kind!==deck[c.i].kind){
+   matched.add(a.i);matched.add(c.i);score++;$("score").textContent=score;$("pairs").textContent=score;
+   [a.b,c.b].forEach(el=>{el.classList.remove("selected");el.classList.add("matched");el.disabled=true});
+   $("feedback").textContent=["เยี่ยมมาก! จับคู่ถูกแล้ว 🌟","เก่งสุด ๆ! ได้อีก 1 คะแนน 🎉","ยอดเยี่ยม ดนตรีอยู่ในใจเธอ 🎶"][Math.floor(Math.random()*3)];
+   selected=[];if(score===10)endGame("ครบทุกคู่แล้ว"); 
+  }else{
+   $("feedback").textContent="ยังไม่ตรงกัน ลองจำสัญลักษณ์อีกนิดนะ 💪";
+   [a.b,c.b].forEach(el=>el.classList.add("wrong"));
+   setTimeout(()=>{if(!finished){[a.b,c.b].forEach(el=>{el.classList.remove("selected","wrong")});selected=[]}},650);
+  }
+ }
+}
+function fmt(s){s=Math.max(0,s);return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+function startGame(){
+ clearInterval(tick);score=0;timeLeft=240;selected=[];matched=new Set();finished=false;startAt=Date.now();
+ $("score").textContent="0";$("pairs").textContent="0";$("time").textContent="04:00";$("bar").style.width="100%";
+ $("setup").classList.add("hidden");$("result").classList.add("hidden");$("game").classList.remove("hidden");
+ makeDeck();renderDeck();$("feedback").textContent="เลือกการ์ด 2 ใบที่ตรงกันเลย! ✨";
+ tick=setInterval(()=>{timeLeft--; $("time").textContent=fmt(timeLeft);$("bar").style.width=(timeLeft/240*100)+"%";if(timeLeft<=0)endGame("หมดเวลา");},1000);
+}
+function endGame(reason){
+ if(finished)return;finished=true;clearInterval(tick);
+ const elapsed=Math.min(240,Math.round((Date.now()-startAt)/1000));
+ $("game").classList.add("hidden");$("result").classList.remove("hidden");
+ const name=$("student").value.trim()||"นักเรียนคนเก่ง";
+ $("resultName").textContent="ผู้เล่น: "+name+" • "+reason;
+ $("finalScore").textContent=score;$("elapsed").textContent=fmt(elapsed);
+ $("medal").textContent=score===10?"🏆":score>=7?"🥇":score>=4?"🎖️":"🌱";
+ $("resultTitle").textContent=score===10?"สุดยอด! นักจับคู่ระดับมาสเตอร์":score>=7?"เก่งมาก ใกล้เต็มแล้ว!":score>=4?"ทำได้ดี ฝึกอีกนิดนะ!":"เริ่มต้นได้ดี ลองเล่นอีกครั้งนะ!";
+ $("resultMsg").textContent=score===10?"จับคู่ถูกครบทุกคู่แล้ว เยี่ยมมาก!":`จับคู่ถูก ${score} จาก 10 คู่ ทบทวนสัญลักษณ์แล้วลองใหม่ได้เลย`;
+ $("copyStatus").textContent="";
+}
+$("startBtn").addEventListener("click",startGame);$("againBtn").addEventListener("click",startGame);$("quitBtn").addEventListener("click",()=>endGame("จบเกม"));
+$("copyBtn").addEventListener("click",async()=>{
+ const name=$("student").value.trim()||"ไม่ระบุชื่อ";
+ const txt=`ผลเกมจับคู่โน้ตดนตรีสากล\nชื่อผู้เล่น: ${name}\nคะแนน: ${score}/10\nเวลาที่ใช้: ${$("elapsed").textContent}`;
+ try{await navigator.clipboard.writeText(txt);$("copyStatus").textContent="คัดลอกผลคะแนนแล้ว สามารถนำไปส่งครูได้เลย ✅"}catch(e){$("copyStatus").textContent=txt}
+});
+</script>
+</body></html>
