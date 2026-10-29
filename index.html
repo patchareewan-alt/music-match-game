@@ -127,7 +127,35 @@ function endGame(reason){
  $("resultTitle").textContent=score===10?"สุดยอด! นักจับคู่ระดับมาสเตอร์":score>=7?"เก่งมาก ใกล้เต็มแล้ว!":score>=4?"ทำได้ดี ฝึกอีกนิดนะ!":"เริ่มต้นได้ดี ลองเล่นอีกครั้งนะ!";
  $("resultMsg").textContent=score===10?"จับคู่ถูกครบทุกคู่แล้ว เยี่ยมมาก!":`จับคู่ถูก ${score} จาก 10 คู่ ทบทวนสัญลักษณ์แล้วลองใหม่ได้เลย`;
  $("copyStatus").textContent="";
-}
+// ส่งคะแนนไปยัง Google Sheets
+ const SCORE_ENDPOINT = "https://script.google.com/macros/s/AKfycbzLwHr0R9DGyAdaYB9lYQJY2px_xdomP0kcIB_T4pi-fjSAKOgqlzuEoo_rbaGDWX4/exec";
+
+ const payload = {
+   name: $("student").value.trim() || "นักเรียนคนเก่ง",
+   className: "",
+   studentNumber: "",
+   score: score,
+   maxScore: 10,
+   elapsedSeconds: elapsed,
+   elapsed: fmt(elapsed),
+   reason: reason,
+   game: "เกมจับคู่โน้ตดนตรีสากล"
+ };
+
+ fetch(SCORE_ENDPOINT, {
+   method: "POST",
+   mode: "no-cors",
+   headers: {
+     "Content-Type": "text/plain;charset=utf-8"
+   },
+   body: JSON.stringify(payload)
+ }).then(() => {
+   $("copyStatus").textContent =
+     "ส่งคำขอบันทึกคะแนนแล้ว หากไม่พบคะแนนในตาราง โปรดตรวจสอบการเชื่อมต่อ";
+ }).catch(() => {
+   $("copyStatus").textContent =
+     "ส่งคะแนนไม่สำเร็จ กรุณาแจ้งครู";
+ });}
 $("startBtn").addEventListener("click",startGame);$("againBtn").addEventListener("click",startGame);$("quitBtn").addEventListener("click",()=>endGame("จบเกม"));
 $("copyBtn").addEventListener("click",async()=>{
  const name=$("student").value.trim()||"ไม่ระบุชื่อ";
